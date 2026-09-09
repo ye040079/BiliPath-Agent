@@ -35,3 +35,7 @@ env/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# ===== 个人/本地文档（你自己留着，不进仓库）=====
+INTERVIEW.md
+*.docx
