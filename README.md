@@ -142,33 +142,7 @@ docker run -e DEEPSEEK_API_KEY=sk-xxx -p 7860:7860 study-agent
 | `DAILY_LIMIT_PER_USER` | 50 | 每用户每日限流 |
 | `ALLOW_REGISTER` | true | 是否允许公开注册（演示时设 false，只允许已有账号登录） |
 
-## 📝 简历描述参考（LLM / Agent 方向）
 
-> **BiliPath Agent**（LangGraph · FastAPI · B站）| 个人项目 | 2026
->
-> 🔗 **Demo**：https://dolly-pushpin-reverb.ngrok-free.dev/
->
-> - 实现 **Multi-Agent 编排**：将「意图理解 → 搜索 → 视频总结 ∥ 评论分析 → 审查 → 计划生成」建模为 LangGraph 有向图，**并行分支**（fan-out / fan-in）+ `astream` **原生流式**，状态由框架统一管理
-> - 解决 **LLM 输出可靠性**：全部节点 **Pydantic 结构化输出 + 校验失败回喂重试**，替代脆弱正则解析；前端提供**结构化选择**（水平 / 周期 / 每日时长 / 目标），计划按周期**自适应粒度**（短周期细化到天）
-> - 自研 **多信号内容审查**：融合字幕实际内容 + 评论区真实口碑 + 标签加权过滤，过滤"养猪流"式标题党，解决纯关键词推荐不可信
-> - 关注 **成本与配额**：SQLite 计划缓存按 水平/时长/周期 精确复用、搜索缓存 24h TTL、每用户每日限流；并发下 **per-user API Key 依赖注入** 防串号
-> - 工程完整：FastAPI + SSE 流式前端、PBKDF2 认证 + Bearer Token、Docker 部署、pytest 单测、`.env` 密钥管理、B站 **wbi 签名**反爬
-
-> 💡 投 LLM/Agent 岗的面试问答见 [INTERVIEW.md](./INTERVIEW.md) 的"LLM / Agent 岗位特供问答"。
-
-## 🎤 面试怎么讲（3 分钟版本）
-
-1. **一句话定位**：一个把"视频推荐"做成"可信学习规划"的 Multi-Agent 系统——不只搜视频，还审查它到底讲了什么、学习者口碑如何，最后才出计划。
-
-2. **为什么用 LangGraph**：原来的手写协调器是一堆 if-else + ThreadPoolExecutor，并行和流式都要手撸、容易出 bug。LangGraph 把流程建模成图，并行分支、流式、状态管理都是框架原生能力。
-
-3. **最有技术含量的一点**：结构化输出——LLM 返回 JSON 不可靠，我用 Pydantic 定义每个 Agent 的输出 schema，校验失败就把错误回喂给模型让它自我修正，而不是盲目重试。
-
-4. **最有价值的工程点**：多用户并发——per-user API Key 依赖注入（不污染全局配置）、会话隔离、每日限流、PBKDF2 密码哈希，以及把密钥从代码里挪到 `.env`。
-
-5. **如果被追问"难点"**：B 站搜索接口的 wbi 签名反爬、评论/字幕爬取的无兜底设计（失败明确报错不造假）、以及如何判断视频"实际内容"与标题是否匹配。
-
-> 📖 更详细的逐模块问答见 [INTERVIEW.md](./INTERVIEW.md)。
 
 ## 📄 License
 
